@@ -1,1 +1,73 @@
-spring.application.name=cojo
+server:
+  port: 9301
+
+---
+spring:
+  profiles:
+    active: @profiles.active@
+---
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximum-pool-size: 50
+      max-lifetime: 600000
+    tomcat:
+      test-on-borrow: true
+      validation-query: SELECT  1
+  jpa:
+    hibernate:
+      ddl-auto: create
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
+    show-sql: true
+    generate-ddl: true
+    open-in-view: false
+    database-platform: org.hibernate.dialect.MySQLDialect
+    properties:
+      hibernate:
+        generate_statistics: false
+        jdbc:
+          batch_size: 1000
+        order_inserts: true
+    database: mysql
+
+---
+spring:
+  application:
+    name: auth-server
+
+---
+# 接口文档配置
+springdoc:
+  api-docs:
+    # 是否开启接口文档
+    enabled: true
+  #  swagger-ui:
+  #    # 持久化认证数据
+  #    persistAuthorization: true
+  info:
+    # 标题
+    title: '标题：Jober微服务权限管理系统_接口文档'
+    # 描述
+    description: '描述：微服务权限管理系统, 具体包括XXX,XXX模块...'
+    # 版本
+    version: '版本号：系统版本...'
+    # 作者信息
+    contact:
+      name: Goya
+      email: 773949603@163.com
+      url: https://ysmjjsy.com
+  components:
+    # 鉴权方式配置
+    security-schemes:
+      apiKey:
+        type: APIKEY
+        in: HEADER
+        name: ${sa-token.token-name}
+
+# 日志配置
+logging:
+  level:
+    org.springframework: warn
+  config: classpath:logback-plus.xml
