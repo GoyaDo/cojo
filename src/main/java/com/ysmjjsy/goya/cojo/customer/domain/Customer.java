@@ -2,26 +2,29 @@ package com.ysmjjsy.goya.cojo.customer.domain;
 
 import com.ysmjjsy.goya.cojo.configuration.jpa.domain.BaseJpaEntity;
 import com.ysmjjsy.goya.cojo.constant.enums.Gender;
+import com.ysmjjsy.goya.cojo.constant.enums.LockStatus;
+import com.ysmjjsy.goya.cojo.customer.convertor.enums.GenderConvertor;
+import com.ysmjjsy.goya.cojo.customer.convertor.enums.LockStatusConvertor;
 import com.ysmjjsy.goya.cojo.role.domain.Role;
 import jakarta.persistence.*;
-import lombok.Data;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serial;
 import java.time.LocalDate;
-import java.util.Collection;
-import java.util.List;
+import java.util.Set;
 
 /**
  * @author Goya
  * @version 1.0
  * @since 2024/3/28 21:32
  */
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "t_customer")
-public class Customer extends BaseJpaEntity implements UserDetails {
+@NamedEntityGraph(name = "Customer.lazy", attributeNodes = {@NamedAttributeNode("roles")})
+public class Customer extends BaseJpaEntity {
     @Serial
     private static final long serialVersionUID = 8517289830422440854L;
 
@@ -47,7 +50,7 @@ public class Customer extends BaseJpaEntity implements UserDetails {
 
     @Column(
             nullable = false,
-            length = 20
+            length = 60
     )
     private String password;
 
@@ -61,6 +64,7 @@ public class Customer extends BaseJpaEntity implements UserDetails {
             nullable = false,
             length = 1
     )
+    @Convert(converter = GenderConvertor.class)
     private Gender gender;
 
     @Column(
@@ -75,46 +79,21 @@ public class Customer extends BaseJpaEntity implements UserDetails {
     )
     private String openId;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "a_customer_role",
             joinColumns = @JoinColumn(name = "customer_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private List<Role> roles;
+    private Set<Role> roles;
 
+    @Column(
+            nullable = false,
+            length = 1
+    )
+    @Convert(converter = LockStatusConvertor.class)
+    private LockStatus lockStatus;
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return roles;
-    }
-
-    @Override
-    public String getPassword() {
-        return this.password;
-    }
-
-    @Override
-    public String getUsername() {
-        return this.username;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return false;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return false;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return false;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return false;
+    public boolean isLock(){
+        return LockStatus.LOCK.equals(this.lockStatus);
     }
 }

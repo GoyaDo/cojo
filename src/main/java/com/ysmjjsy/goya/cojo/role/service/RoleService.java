@@ -2,7 +2,7 @@ package com.ysmjjsy.goya.cojo.role.service;
 
 import com.ysmjjsy.goya.cojo.role.domain.Role;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * @author Goya
@@ -11,5 +11,5 @@ import java.util.List;
  */
 public interface RoleService {
 
-    List<Role> defaultRoles();
+    Set<Role> defaultRoles();
 }

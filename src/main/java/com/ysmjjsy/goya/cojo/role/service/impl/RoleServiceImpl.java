@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * @author Goya
@@ -22,7 +22,7 @@ public class RoleServiceImpl implements RoleService {
     private final RoleRepository roleRepository;
 
     @Override
-    public List<Role> defaultRoles() {
+    public Set<Role> defaultRoles() {
         return roleRepository.findRoleByRoleCode("CUSTOMER");
     }
 }

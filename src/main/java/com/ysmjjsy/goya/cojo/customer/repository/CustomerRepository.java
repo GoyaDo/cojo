@@ -4,6 +4,8 @@ import com.ysmjjsy.goya.cojo.configuration.jpa.domain.BaseJpaRepository;
 import com.ysmjjsy.goya.cojo.customer.domain.Customer;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 /**
  * @author Goya
  * @version 1.0
@@ -11,4 +13,6 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface CustomerRepository extends BaseJpaRepository<Customer,Long> {
+
+    Optional<Customer> findByUsername(String username);
 }

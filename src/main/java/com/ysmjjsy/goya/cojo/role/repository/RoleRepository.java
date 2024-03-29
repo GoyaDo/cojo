@@ -4,7 +4,7 @@ import com.ysmjjsy.goya.cojo.configuration.jpa.domain.BaseJpaRepository;
 import com.ysmjjsy.goya.cojo.role.domain.Role;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * @author Goya
@@ -14,5 +14,5 @@ import java.util.List;
 @Repository
 public interface RoleRepository extends BaseJpaRepository<Role,Long> {
 
-    List<Role> findRoleByRoleCode(String roleCode);
+    Set<Role> findRoleByRoleCode(String roleCode);
 }

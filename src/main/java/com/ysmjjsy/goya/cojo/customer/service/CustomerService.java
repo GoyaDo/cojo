@@ -1,6 +1,7 @@
 package com.ysmjjsy.goya.cojo.customer.service;
 
 import com.ysmjjsy.goya.cojo.cmd.RegisterCustomerRequest;
+import com.ysmjjsy.goya.cojo.customer.domain.Customer;
 
 /**
  * @author Goya
@@ -15,4 +16,12 @@ public interface CustomerService {
      * @return 响应
      */
     RegisterCustomerRequest registerCustomer(RegisterCustomerRequest request);
+
+    /**
+     * 根据用户名获取用户
+     * @param username 用户名
+     * @return 用户
+     */
+    Customer findCustomerByUsername(String username);
+
 }
